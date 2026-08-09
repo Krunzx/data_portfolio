@@ -96,6 +96,20 @@ pronunciado. *(Nota: esta cifra se calcula sobre los 9 países/bloques que el
 BCCh desglosa individualmente, no sobre el 100% real de las exportaciones
 chilenas a todo el mundo — ver limitación en Aprendizajes.)*
 
+**6. La concentración en China es más pronunciada en exportaciones que en
+importaciones**: China también lidera como origen de importaciones, con una
+participación que creció de 21.5% (2003-2019) a 32.7% (2020-2026) — la
+misma tendencia creciente que en exportaciones, pero unos 12 puntos
+porcentuales por debajo. Además, el ranking de importaciones muestra más
+diversificación regional: Brasil y Argentina aparecen entre los principales
+orígenes (842 y 795 MUSD en el último período), algo que no ocurre en
+exportaciones. Esto matiza la hipótesis inicial de "dependencia generalizada
+de un solo socio": el patrón de concentración es real y creciente en ambos
+flujos, pero notablemente más fuerte del lado exportador — coherente con
+que las exportaciones están dominadas por un commodity (cobre) cuyo
+principal comprador es China, mientras que las importaciones cubren una
+canasta más diversa de bienes con orígenes más variados.
+
 ## Aprendizajes
 
 - **El dataset del BCCh no incluye un total mundial de exportaciones** —
