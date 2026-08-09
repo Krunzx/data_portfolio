@@ -82,6 +82,20 @@ mantuvo prácticamente estable (+5%). Las exportaciones a Asia en este tramo
 muestran alta volatilidad mes a mes, con una correlación moderada (0.44)
 frente al precio — más ruidosa que en la serie completa de 23 años.
 
+**5. El crecimiento de Asia se explica casi en su totalidad por China, no
+por el continente en general**: entre 2020 y 2026, las exportaciones a
+China crecieron ~161% respecto al promedio 2003-2019, mientras que Japón
+y Corea del Sur crecieron solo ~24% y ~41% respectivamente. Esto se refleja
+directamente en la concentración: la participación de China sobre el total
+de exportaciones desglosadas por país pasó de un promedio de 26.6%
+(2003-2019) a 44.9% (2020-2026) — es decir, hoy casi la mitad de las
+exportaciones a los principales socios comerciales desglosados va a un solo
+destino. La serie muestra además dos "escalones" de concentración: uno
+alrededor de 2009 (recuperación post-crisis financiera) y otro en 2020, más
+pronunciado. *(Nota: esta cifra se calcula sobre los 9 países/bloques que el
+BCCh desglosa individualmente, no sobre el 100% real de las exportaciones
+chilenas a todo el mundo — ver limitación en Aprendizajes.)*
+
 ## Aprendizajes
 
 - **El dataset del BCCh no incluye un total mundial de exportaciones** —
@@ -106,6 +120,13 @@ frente al precio — más ruidosa que en la serie completa de 23 años.
   variación porcentual es poco confiable** si esos puntos puntuales no son
   representativos de la tendencia general; promediar ventanas de varios
   meses en cada extremo da una lectura más robusta.
+- **Un porcentaje de "participación sobre el total" depende completamente
+  de qué se considera "el total"** — en este caso, el 44.9% de
+  participación de China está calculado sobre los 9 países/bloques
+  desglosados por el BCCh, no sobre el 100% real de las exportaciones
+  chilenas. Es una aproximación válida de la concentración relativa entre
+  los principales socios, pero debe reportarse con esa precisión para no
+  sobre-afirmar.
 
 ## Cómo reproducir
 1. `pip install -r requirements.txt`
