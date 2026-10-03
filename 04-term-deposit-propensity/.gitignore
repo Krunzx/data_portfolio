@@ -5,6 +5,9 @@ data/processed/*
 .env
 creds.env
 *.json.key
+
+# Material de estudio personal (no publicar)
+docs/guia_base.md
 *service-account*.json
 *credentials*.json
 
