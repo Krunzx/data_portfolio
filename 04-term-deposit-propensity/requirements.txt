@@ -11,3 +11,6 @@ db-dtypes
 pandas-gbq
 lightgbm
 shap
+google-cloud-bigquery-storage
+google-cloud-bigquery-storage
+google-cloud-bigquery-storage

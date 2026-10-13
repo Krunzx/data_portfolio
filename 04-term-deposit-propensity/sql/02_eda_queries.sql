@@ -481,7 +481,7 @@ ORDER BY bloque;
 {"bloque": "10","desde": "37070","hasta": "41187","n": "4118","tasa_conversion": "0.4594","euribor_prom": "0.8","emp_var_prom": "-2.36","nr_employed_prom": "5015.0"}]
 */
 
--- 12b. Hipótesis: emp_var_rate, euribor3m y nr_employed tienen |r| > 0.8 entre si.
+-- P12b. Hipótesis: emp_var_rate, euribor3m y nr_employed tienen |r| > 0.8 entre si.
 SELECT
     ROUND(CORR(emp_var_rate, euribor3m), 3) AS empvar_euribor,
     ROUND(CORR(emp_var_rate, nr_employed), 3) AS empvar_nremp,
