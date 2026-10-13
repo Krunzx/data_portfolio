@@ -8,6 +8,7 @@ creds.env
 
 # Material de estudio personal (no publicar)
 docs/guia_base.md
+docs/estado_proyecto.md
 *service-account*.json
 *credentials*.json
 
