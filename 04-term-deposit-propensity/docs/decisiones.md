@@ -49,7 +49,7 @@ Cada pregunta se planteó con una hipótesis escrita antes de ejecutar la consul
 | 8 | Los meses con más llamados convierten más | Mayo, con 13.769 llamadas, convierte 6,4%. Marzo, septiembre, octubre y diciembre convierten entre 44% y 51% con 182 a 718 llamadas | Refutada. El período explica la mayor parte: mayo convierte 2,8% en el primer décimo, 7,7% en el octavo y 57,6% en el último. Septiembre cae por completo en el último décimo, y diciembre casi (172 de 182 llamadas) (P14) |
 | 9 | Celular convierte más que teléfono fijo | 14,7% contra 5,2% en total. Dentro de cada décimo el celular gana entre 1,3 y 2,8 veces, salvo el sexto (teléfono fijo 23,5%, n=306). Los décimos 1 a 3 son solo teléfono fijo (P15) | Confirmada con matiz: efecto propio, pero menor que el global |
 | 10 | La conversión decae después del tercer intento | 13,0% en el primer intento, 10,8% en el tercero y 4,6% con siete o más. La baja es gradual desde el primero | Confirmada en dirección |
-| 11 | Haber contratado en una campaña anterior aumenta la conversión | `success` 65,1% contra 8,8% sin contacto previo | Confirmada |
+| 11 | Haber contratado en una campaña anterior aumenta la conversión | `success` 65,1% contra 8,8% sin contacto previo. Quien rechazó antes también convierte más: `failure` 12,9% sin fecha de contacto y 51,4% con fecha (P11) | Confirmada |
 | 12A | La conversión no es estable en el tiempo | De 2,8% a 45,9% entre el primer y el último décimo | Confirmada |
 | 12B | Las variables macro están muy correlacionadas entre sí | `emp_var_rate` con `euribor3m` 0,97; con `nr_employed` 0,91; `euribor3m` con `nr_employed` 0,95 | Confirmada |
 | 13 | A menor Euribor, menor conversión | Euribor bajo 1: 45,7%. Entre 4 y 5: 4,8% | Refutada. Coincide con el período |
