@@ -509,3 +509,120 @@ ORDER BY euribor_tramo;
 {"euribor_tramo": "4","n": "27660","tasa_conversion": "0.0481"}, 
 {"euribor_tramo": "5","n": "16","tasa_conversion": "0.5"}]
 */
+
+-- P14. Mes x bloque temporal (separa estacionalidad de periodo)
+-- Hipótesis: la alta conversión de marzo, septiembre, octubre y diciembre es efecto del periodo, no del mes.
+-- Se refuta si cada mes convierte distinto en bloques distintos, con tasas parecidas dentro de cada bloque.
+WITH b AS (
+    SELECT
+        *,
+        NTILE(10) OVER (ORDER BY row_id) AS bloque
+    FROM `TU_PROYECTO.TU_DATASET.bank_additional_full`
+)
+SELECT
+    bloque,
+    month,
+    COUNT(*) AS n,
+    ROUND(COUNTIF(y = 'yes') / COUNT(*), 4) AS tasa_conversion
+FROM b
+GROUP BY bloque, month
+HAVING COUNT(*) >= 50
+ORDER BY bloque, month;
+-- Resultado:
+/*
+[{"bloque": "1","month": "may","n": "4119","tasa_conversion": "0.0277"}, 
+{"bloque": "2","month": "jun","n": "475","tasa_conversion": "0.04"}, 
+{"bloque": "2","month": "may","n": "3644","tasa_conversion": "0.0346"}, 
+{"bloque": "3","month": "jul","n": "220","tasa_conversion": "0.0227"}, 
+{"bloque": "3","month": "jun","n": "3899","tasa_conversion": "0.0433"}, 
+{"bloque": "4","month": "jul","n": "4119","tasa_conversion": "0.0663"}, 
+{"bloque": "5","month": "aug","n": "1773","tasa_conversion": "0.0722"}, 
+{"bloque": "5","month": "jul","n": "2346","tasa_conversion": "0.055"}, 
+{"bloque": "6","month": "aug","n": "3402","tasa_conversion": "0.042"}, 
+{"bloque": "6","month": "nov","n": "650","tasa_conversion": "0.0615"}, 
+{"bloque": "6","month": "oct","n": "67","tasa_conversion": "0.6269"}, 
+{"bloque": "7","month": "apr","n": "861","tasa_conversion": "0.1649"}, 
+{"bloque": "7","month": "mar","n": "282","tasa_conversion": "0.4468"}, 
+{"bloque": "7","month": "nov","n": "2966","tasa_conversion": "0.0506"}, 
+{"bloque": "8","month": "apr","n": "1597","tasa_conversion": "0.1879"}, 
+{"bloque": "8","month": "may","n": "2522","tasa_conversion": "0.0765"}, 
+{"bloque": "9","month": "jul","n": "131","tasa_conversion": "0.4046"}, 
+{"bloque": "9","month": "jun","n": "715","tasa_conversion": "0.3692"}, 
+{"bloque": "9","month": "may","n": "3272","tasa_conversion": "0.1012"}, 
+{"bloque": "10","month": "apr","n": "174","tasa_conversion": "0.5575"}, 
+{"bloque": "10","month": "aug","n": "1003","tasa_conversion": "0.3829"}, 
+{"bloque": "10","month": "dec","n": "172","tasa_conversion": "0.5116"}, 
+{"bloque": "10","month": "jul","n": "358","tasa_conversion": "0.5279"}, 
+{"bloque": "10","month": "jun","n": "229","tasa_conversion": "0.4672"}, 
+{"bloque": "10","month": "mar","n": "264","tasa_conversion": "0.5682"}, 
+{"bloque": "10","month": "may","n": "212","tasa_conversion": "0.5755"}, 
+{"bloque": "10","month": "nov","n": "485","tasa_conversion": "0.466"}, 
+{"bloque": "10","month": "oct","n": "651","tasa_conversion": "0.4194"}, 
+{"bloque": "10","month": "sep","n": "570","tasa_conversion": "0.4491"}]
+*/
+-- Veredicto P14: el periodo domina sobre el mes. Mayo convierte 2,8% (bloque 1), 7,7% (bloque 8)
+-- y 57,6% (bloque 10). Septiembre y diciembre solo existen en el bloque 10. Quedan diferencias
+-- dentro de un mismo bloque (por ejemplo abril 18,8% contra mayo 7,7% en el bloque 8), que
+-- pueden ser deriva dentro del bloque o un efecto real del mes; los datos no permiten separarlas.
+
+-- P15. Canal x bloque temporal
+-- Hipótesis: la ventaja del celular sobre el teléfono fijo se mantiene dentro de cada bloque.
+-- Se refuta si en la mayoria de los bloques ambos canales convierten parecido.
+WITH b AS (
+    SELECT
+        *,
+        NTILE(10) OVER (ORDER BY row_id) AS bloque,
+    FROM `TU_PROYECTO.TU_DATASET.bank_additional_full`
+)
+SELECT
+    bloque,
+    contact,
+    COUNT(*) AS n,
+    ROUND(COUNTIF(y = 'yes') / COUNT(*), 4) AS tasa_conversion
+FROM b
+GROUP BY bloque, contact
+ORDER BY bloque, contact;
+-- Resultado:
+/*
+[{"bloque": "1","contact": "telephone","n": "4119","tasa_conversion": "0.0277"}, 
+{"bloque": "2","contact": "telephone","n": "4119","tasa_conversion": "0.0352"}, 
+{"bloque": "3","contact": "telephone","n": "4119","tasa_conversion": "0.0422"}, 
+{"bloque": "4","contact": "cellular","n": "3688","tasa_conversion": "0.071"}, 
+{"bloque": "4","contact": "telephone","n": "431","tasa_conversion": "0.0255"}, 
+{"bloque": "5","contact": "cellular","n": "3755","tasa_conversion": "0.0642"}, 
+{"bloque": "5","contact": "telephone","n": "364","tasa_conversion": "0.044"}, 
+{"bloque": "6","contact": "cellular","n": "3813","tasa_conversion": "0.0401"}, 
+{"bloque": "6","contact": "telephone","n": "306","tasa_conversion": "0.2353"}, 
+{"bloque": "7","contact": "cellular","n": "3783","tasa_conversion": "0.1047"}, 
+{"bloque": "7","contact": "telephone","n": "336","tasa_conversion": "0.0685"}, 
+{"bloque": "8","contact": "cellular","n": "3862","tasa_conversion": "0.1214"}, 
+{"bloque": "8","contact": "telephone","n": "257","tasa_conversion": "0.0934"}, 
+{"bloque": "9","contact": "cellular","n": "3749","tasa_conversion": "0.1646"}, 
+{"bloque": "9","contact": "telephone","n": "369","tasa_conversion": "0.084"}, 
+{"bloque": "10","contact": "cellular","n": "3494","tasa_conversion": "0.4908"}, 
+{"bloque": "10","contact": "telephone","n": "624","tasa_conversion": "0.2837"}]
+*/
+-- Veredicto P15: confirmada con matiz. Los bloques 1 a 3 son solo teléfono fijo, así que parte de
+-- la brecha global (14,7% contra 5,2%) es composición. Dentro de cada bloque el celular gana entre
+-- 1,3 y 2,8 veces, salvo el bloque 6 (teléfono fijo 23,5% con n=306).
+
+-- P16. Consistencia entre poutcome, pdays y previous.
+-- Hipótesis: poutcome = 'failure' con pdays = 999 corresponde a previous > 0
+-- (hubo contacto previo sin fecha registrada)
+-- Se refuta si esas filas tienen previous = 0.
+SELECT
+    poutcome,
+    IF(pdays = 999, 'pdays_999', 'pdays_real') AS pdays_flag,
+    IF(previous > 0, 'previous > 0', 'previous = 0') AS previous_flag,
+    COUNT(*) AS n
+FROM `TU_PROYECTO.TU_DATASET.bank_additional_full`
+GROUP BY poutcome, pdays_flag, previous_flag
+ORDER BY poutcome, pdays_flag, previous_flag;
+-- Resultado:
+-- failure    | pdays_999  | previous > 0 | 4110
+-- failure    | pdays_real | previous > 0 | 142
+-- nonexistent| pdays_999  | previous = 0 | 35563
+-- success    | pdays_real | previous > 0 | 1373
+-- Veredicto: confirmada. Los 4.110 casos de failure con pdays = 999 tienen previous > 0:
+-- hubo contacto previo sin fecha registrada. La inconsistencia está en pdays, no en poutcome.
+-- Decisión: la bandera de contacto previo se construye con previous > 0, no con pdays = 999.
