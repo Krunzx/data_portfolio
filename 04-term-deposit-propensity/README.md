@@ -2,7 +2,7 @@
 
 Modelo predictivo para priorizar a qué clientes contactar en una campaña de telemarketing bancario, usando el dataset [Bank Marketing (UCI)](https://archive.ics.uci.edu/dataset/222/bank+marketing).
 
-> Estado: en desarrollo. La etapa 1 (planteamiento) está completa y los resultados se agregarán en cada etapa.
+> Estado: en desarrollo. Las etapas 0 a 2 están completadas y los resultados se agregarán en cada etapa.
 
 Stack: Python (pandas, scikit-learn, LightGBM), Google BigQuery y BigQuery ML, SQL, y Power BI (opcional).
 
@@ -64,13 +64,28 @@ Con esto se calcula el beneficio neto para cada porcentaje de base contactada y 
 |---|---|---|
 | 0 | Setup: repo, entorno Python 3.12, GCP/BigQuery | Completada |
 | 1 | Problema de negocio y métricas | Completada |
-| 2 | Carga a BigQuery y análisis exploratorio | Pendiente |
+| 2 | Carga a BigQuery y análisis exploratorio | Completada |
 | 3 | Preparación de datos, control de leakage, split temporal | Pendiente |
 | 4 | Baseline y modelos (regresión logística, árboles, gradient boosting) | Pendiente |
 | 5 | Evaluación | Pendiente |
 | 6 | Traducción a negocio | Pendiente |
 | 7 | BigQuery ML (opcional) | Pendiente |
 | 8 | Dashboard Power BI (opcional) | Pendiente |
+
+##  Hallazgos del EDA
+- La conversión no es estable en el tiempo: pasa de 2,8% en el primer décimo de los datos a 45,9% en el último. Esto condiciona el split, las métricas y la calibración.
+- Haber contratado en una campaña anterior es la señal más fuerte: los clientes con historial `success` convierten 65,1%, contra 8,8% de quienes no tenían contacto previo.
+- La edad tiene forma de U, no de línea: convierten 24,0% los menores de 25 años, 8,65% entre 35 y 54 años y 47,2% los mayores de 65.
+- El mes y el Euribor están confundidos con el tiempo: mayo convierte desde 2,8% hasta 57,6% según el período, y el Euribor baja a lo largo de los datos. Por eso sus efectos aparentes no se interpretan como causas.
+- `pdays = 999` mezcla dos casos: 35.563 clientes nunca contactados y 4.110 contactados antes sin fecha registrada. La bandera de contacto previo se construye con `previous > 0`.
+
+![Conversión por tramo de edad](reports/figures/edad_u.png)
+
+![Llamadas y conversión por mes](reports/figures/mes_volumen_tasa.png)
+
+![Conversión y Euribor por bloque temporal](reports/figures/bloques_euribor.png)
+
+![Conversión por número de intento](reports/figures/intentos.png)
 
 ## 6. Estructura del repositorio
 
