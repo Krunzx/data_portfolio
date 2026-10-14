@@ -427,21 +427,23 @@ ORDER BY intento;
 -- BLOQUE 3: HISTORIAL CON EL BANCO
 -- ---------------------------------------------------------------------
 -- P11. Hipótesis: con historial de conversión previo (poutcome = success), mayor conversión.
+-- El contacto previo se define con previous > 0, no con pdays = 999 (ver P16 y D14).
 SELECT
     poutcome,
-    IF(pdays = 999, 'nunca_contactado', 'contactado_antes') AS historial_pdays,
+    IF(previous > 0, 'contactado_antes', 'nunca_contactado') AS historial_previo,
+    IF(pdays = 999, 'sin_fecha', 'con_fecha') AS ultimo_contacto,
     COUNT(*) AS n,
     ROUND(COUNTIF(y = 'yes') / COUNT(*), 4) AS tasa_conversion
 FROM `TU_PROYECTO.TU_DATASET.bank_additional_full`
-GROUP BY poutcome, historial_pdays
-ORDER BY poutcome, historial_pdays;
--- Resultado:
-/*
-[{"poutcome": "failure","historial_pdays": "contactado_antes","n": "142","tasa_conversion": "0.5141"}, 
-{"poutcome": "failure","historial_pdays": "nunca_contactado","n": "4110","tasa_conversion": "0.1294"}, 
-{"poutcome": "nonexistent","historial_pdays": "nunca_contactado","n": "35563","tasa_conversion": "0.0883"}, 
-{"poutcome": "success","historial_pdays": "contactado_antes","n": "1373","tasa_conversion": "0.6511"}]
-*/
+GROUP BY poutcome, historial_previo, ultimo_contacto
+ORDER BY poutcome, historial_previo, ultimo_contacto;
+-- Resultado (mismas 4 filas y cifras de la version anterior; solo cambian las etiquetas):
+-- failure     | contactado_antes | con_fecha |   142 | 0.5141
+-- failure     | contactado_antes | sin_fecha |  4110 | 0.1294
+-- nonexistent | nunca_contactado | sin_fecha | 35563 | 0.0883
+-- success     | contactado_antes | con_fecha |  1373 | 0.6511
+-- Veredicto: confirmada. Haber contratado antes es la señal más fuerte (65,1%). Quien rechazó antes
+-- también convierte más que quien nunca fue contactado (12,9% y 51,4% contra 8,8%).
 
 -- ---------------------------------------------------------------------
 -- BLOQUE 4: TIEMPO Y MACRO
@@ -561,7 +563,7 @@ ORDER BY bloque, month;
 {"bloque": "10","month": "sep","n": "570","tasa_conversion": "0.4491"}]
 */
 -- Veredicto P14: el periodo domina sobre el mes. Mayo convierte 2,8% (bloque 1), 7,7% (bloque 8)
--- y 57,6% (bloque 10). Septiembre y diciembre solo existen en el bloque 10. Quedan diferencias
+-- y 57,6% (bloque 10). Septiembre cae por completo en el bloque 10, y diciembre casi (172 de 182). Quedan diferencias
 -- dentro de un mismo bloque (por ejemplo abril 18,8% contra mayo 7,7% en el bloque 8), que
 -- pueden ser deriva dentro del bloque o un efecto real del mes; los datos no permiten separarlas.
 
