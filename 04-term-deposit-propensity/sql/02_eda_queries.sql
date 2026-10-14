@@ -55,7 +55,7 @@ FROM `TU_PROYECTO.TU_DATASET.bank_additional_full`;
 -- Resultado:
 -- Ninguna columna tiene valores nulos.
 
--- P1c. Rangos: buscar valroes anómalos.
+-- P1c. Rangos: buscar valores anómalos.
 SELECT
     MIN(age) AS edad_min, MAX(age) AS edad_max,
     MIN(campaign) AS campaign_min, MAX(campaign) AS campaign_max,
@@ -277,7 +277,7 @@ ORDER BY tasa_conversion DESC;
 {"job": "management","education": "basic.4y","n": "100","tasa_conversion": "0.05"}]
 */
 
--- P6. Hipótesis: a mayor edad, menor conversión (inlcuidos los retired)
+-- P6. Hipótesis: a mayor edad, menor conversión (incluidos los retired)
 SELECT
     CASE
         WHEN age < 25 THEN '1_<25'
@@ -403,7 +403,7 @@ GROUP BY contact;
 {"contact": "cellular","n": "26144","tasa_conversion": "0.1474"}]
 */
 
--- P10. Hipótesis: la conversión decar después del tercer intento.
+-- P10. Hipótesis: la conversión decae después del tercer intento.
 -- El valor 7 agrupa "7 o más" para evitar grupos pequeños.
 SELECT
     LEAST(campaign, 7) AS intento,

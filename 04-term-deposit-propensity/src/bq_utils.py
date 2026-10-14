@@ -13,8 +13,13 @@ warnings.filterwarnings("ignore", message="BigQuery Storage module not found")
 ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / "creds.env")
 
-PROJECT = os.environ["GCP_PROJECT_ID"]
-DATASET = os.environ["BQ_DATASET"]
+def _need(name: str) -> str:
+    if name not in os.environ:
+        raise RuntimeError(f"Falta {name}. Copia creds.env.example a creds.env y complétalo.")
+    return os.environ[name]
+
+PROJECT = _need("GCP_PROJECT_ID")
+DATASET = _need("BQ_DATASET")
 PLACEHOLDER = "TU_PROYECTO.TU_DATASET"
 
 client = bigquery.Client(project=PROJECT)
