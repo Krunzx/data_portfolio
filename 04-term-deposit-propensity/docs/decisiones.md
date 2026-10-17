@@ -20,17 +20,9 @@ Registro de cada decisión con su justificación, pensado como guion para entrev
 | D12 | Eliminar los 12 duplicados exactos (0,03%) antes de separar los datos, conservando la primera aparición | Dejarlos | No aportan información y, si quedan, una misma fila puede caer en train y en test |
 | D13 | Mantener `unknown` como categoría propia | Imputar con la moda o eliminar las filas | `default_credit` tiene 20,9% de `unknown`, así que eliminar perdería una quinta parte de los datos. Además sus tasas difieren de las demás categorías (por ejemplo `education` desconocida convierte 14,5% contra 11,3% global) |
 | D14 | Construir la bandera de contacto previo con `previous > 0`, no con `pdays = 999`. Usar `pdays` solo como número de días en las 1.515 filas con valor real, con un indicador aparte para el resto | Usar `pdays = 999` como "nunca contactado" | En 4.110 filas `poutcome = failure` tiene `pdays = 999` y `previous > 0`: hubo contacto previo sin fecha registrada. El 999 mezcla "nunca contactado" (35.563 filas, `previous = 0`) con "contactado sin fecha". `previous` y `poutcome` son consistentes entre sí |
-| D15 | Split temporal 60/20/20 por `row_id`: train 4,8%, validación 11,1%, y test 30,08% de positivos. Se
-documenta la deriva como hallazgo central | Ventana expansiva como esquema principal; otras proporcionas;
-split aleatorio | Imita el uso real. Ningún corte elimina la deriva, porque cualquier test al final queda con
-una tasa muy superior a la de train. Con 60/20/20 el modelo se entrena con un período y se evalúa en otro,
-y el costo de la deriva se reporta en vez de ocultarse. El split aleatorio se usa solo como contraste para 
-mostrar cuánto infla el resultado |
-| D16 | Métricas principales: ROC-AUC, lift y ganancia acumulada. PR-AUC siempre junto a la tasa base de cada
-conjunto de validación | PR-AUC como métrica principal (D7) | ROC-AUC, lift y ganancia dependen del orden y no
-de la tasa base. PR-AUC cambia con la tasa base, que pasa de 4,8% a 30,8% entre train y test, así que solo se interpreta junto a ella. Las probabilidades aprendidas en train no estarían calibradas en test |
-| D17 | Usar `intentos_previos = campaign - 1` en lugar de `campaign` | Usarla tal cual o excluirla | Según la documentación, `campaign` incluye la llamada actual. Restar 1 deja solo los contactos anteriores a la decisión
-de llamar, que es lo que se sabe de antemano |
+| D15 | Split temporal 60/20/20 por `row_id`: train 4,8%, validación 11,1% y test 30,8% de positivos. Se documenta la deriva como hallazgo central | Ventana expansiva como esquema principal; otras proporciones; split aleatorio | Imita el uso real. Ningún corte elimina la deriva, porque cualquier test al final queda con una tasa muy superior a la de train. Con 60/20/20 el modelo se entrena con un período y se evalúa en otro, y el costo de la deriva se reporta en vez de ocultarse. El split aleatorio se usa solo como contraste para mostrar cuánto infla el resultado |
+| D16 | Métricas principales: ROC-AUC, lift y ganancia acumulada. PR-AUC siempre junto a la tasa base de cada conjunto. Recalibrar con el conjunto de validación | PR-AUC como métrica principal (D7) | ROC-AUC, lift y ganancia dependen del orden y no de la tasa base. PR-AUC cambia con la tasa base, que pasa de 4,8% a 30,8% entre train y test, así que solo se interpreta junto a ella. Las probabilidades aprendidas en train no estarían calibradas en test |
+| D17 | Usar `intentos_previos = campaign - 1` en lugar de `campaign` | Usarla tal cual o excluirla | Según la documentación, `campaign` incluye la llamada actual. Restar 1 deja solo los contactos anteriores a la decisión de llamar, que es lo que se sabe de antemano |
 
 ## Decisiones abiertas
 
