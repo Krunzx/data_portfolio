@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 from dotenv import load_dotenv
 from google.cloud import bigquery
+from functools import lru_cache
 
 import warnings
 
@@ -22,7 +23,9 @@ PROJECT = _need("GCP_PROJECT_ID")
 DATASET = _need("BQ_DATASET")
 PLACEHOLDER = "TU_PROYECTO.TU_DATASET"
 
-client = bigquery.Client(project=PROJECT)
+@lru_cache
+def _client() -> bigquery.Client:
+    return bigquery.Client(project=PROJECT)
 
 def load_queries(path: str = 'sql/02_eda_queries.sql') -> dict[str, str]:
     """
@@ -45,4 +48,4 @@ def run(sql: str) -> pd.DataFrame:
     """
     Ejecuta una consulta SQL en BigQuery y devuelve un DataFrame.
     """
-    return client.query(sql.replace(PLACEHOLDER, f"{PROJECT}.{DATASET}")).to_dataframe()
+    return _client().query(sql.replace(PLACEHOLDER, f"{PROJECT}.{DATASET}")).to_dataframe()
