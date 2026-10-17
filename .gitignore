@@ -219,3 +219,14 @@ __marimo__/
 
 # V. Enviroment
 venv/
+
+# Portafolio: datos originales y mapeo de bancos (no versionar)
+**/data/raw/
+**/mapeo_bancos*
+
+# Estado del proyecto: material personal
+**/docs/estado_proyecto.md
+
+# Documentos de trabajo (no publicar)
+docs/superpowers/
+docs/guia_estudio.md
